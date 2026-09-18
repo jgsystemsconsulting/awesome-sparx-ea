@@ -1,0 +1,24 @@
+name: canonical-url
+on: [push, pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require primary reference
+        run: |
+          set -e
+          # Must mention the primary repo name exactly once as the canonical target
+          n=$(grep -c 'awesome-enterprise-architect' README.md || true)
+          test "$n" -ge 1
+          # If an https URL to the primary appears, there must be exactly one such URL
+          urls=$(grep -oE 'https://github.com/jgsystemsconsulting/awesome-enterprise-architect[^) ]*' README.md | sort -u | wc -l)
+          if [ "$urls" -gt 1 ]; then echo "multiple primary URLs"; exit 1; fi
+      - name: Lychee absolute primary URL if present
+        if: ${{ hashFiles('README.md') != '' }}
+        run: |
+          if grep -qE 'https://github.com/jgsystemsconsulting/awesome-enterprise-architect' README.md; then
+            npx --yes lychee@0.24.2 --no-progress README.md || true
+            # Prefer lychee-action in final port; fail if absolute URL present and lychee fails
+            docker run --rm -v "$PWD:/data" lycheeverse/lychee:0.24.2 --no-progress /data/README.md
+          fi
