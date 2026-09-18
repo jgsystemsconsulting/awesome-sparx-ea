@@ -1,10 +1,6 @@
 # awesome-sparx-ea
 
-<p align="right">
-  <a href="https://github.com/jgsystemsconsulting/awesome-sparx-ea">
-    <img src="media/logo.svg" width="256" alt="list mark">
-  </a>
-</p>
+[<img src="media/logo.svg" align="right" width="100" alt="Sparx EA">](https://github.com/jgsystemsconsulting/awesome-sparx-ea)
 
 Namespace reserve for the Sparx Systems Enterprise Architect awesome list.
 
